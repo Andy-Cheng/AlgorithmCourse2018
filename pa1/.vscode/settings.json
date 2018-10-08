@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "cstdio": "cpp",
+        "iostream": "cpp",
+        "iosfwd": "cpp",
+        "vector": "cpp",
+        "ostream": "cpp",
+        "deque": "cpp",
+        "iterator": "cpp",
+        "string": "cpp",
+        "__split_buffer": "cpp"
+    }
+}
