@@ -149,13 +149,13 @@ int main(int argc, char** argv ){
 
         }
     }
+    /*
     cout<<"Circle"<<endl;
     cout<<"Number of vertices:"<< circle.N<<endl;
     cout<< "edges:"<<endl;
     for(int i = 0; i < circle.N; ++i ){
         cout<<i<<"<--->"<<circle.chords[i]<<endl;
     }
-    /*
     cout<< "result"<<endl;
     for(int j = 0; j <  circle.N; ++j){
         for(int i = 0; i < circle.N; ++i){
