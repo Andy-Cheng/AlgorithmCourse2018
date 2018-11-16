@@ -57,9 +57,9 @@ void parseFile(string fileName, Circle& circle ){
     if(inFile.is_open()){
         string line;
         getline(inFile, line);
-        circle.N = stoi(line.substr(0, line.length()-1))/2;
-        circle.chords = new int[(2 * circle.N)];
-        for(int i = 0; i < circle.N ; ++i){
+        circle.N = stoi(line.substr(0, line.length()));
+        circle.chords = new int[circle.N];
+        for(int i = 0; i < circle.N/2 ; ++i){
             getline(inFile, line);
             istringstream ss(line);
             string start_s, end_s;
@@ -77,12 +77,13 @@ void parseFile(string fileName, Circle& circle ){
     }
 }
 
-void traceEdge(MIS* mis, ofstream& outFile ){
+void traceEdge(MIS* mis, ofstream& outFile){
     if(mis->succesor[0] != nullptr){
         traceEdge(mis->succesor[0], outFile);
     }
     if( mis->edge[0] != -1){
-        outFile<< mis->edge[0]<< " "<<mis->edge[1]<<endl;
+        // cout<< mis->edge[0]<< " "<<mis->edge[1]<<endl;
+        outFile<<"\n"<< mis->edge[0]<< " "<<mis->edge[1];
     }
     if(mis->succesor[1] != nullptr){
         traceEdge(mis->succesor[1], outFile);
@@ -96,11 +97,11 @@ int main(int argc, char** argv ){
     Circle circle;
     parseFile(argv[1], circle);
     // |MIS(i, j)| is stored in dynamic array 2Nx2N.
-    MIS** misTable = new MIS* [ (2 * circle.N) ];
+    MIS** misTable = new MIS* [circle.N];
     // Initialization MIS  table
-    for(int i = 0; i < (2 * circle.N); ++i){
-        misTable[i] = new MIS [ (2 * circle.N) ];
-        for(int j = 0; j < (2 * circle.N); ++j){
+    for(int i = 0; i <  circle.N; ++i){
+        misTable[i] = new MIS [circle.N];
+        for(int j = 0; j < circle.N; ++j){
             misTable[i][j].size = 0;
             misTable[i][j].succesor[0] = nullptr;
             misTable[i][j].succesor[1] = nullptr;
@@ -111,34 +112,62 @@ int main(int argc, char** argv ){
     // FIND-MIS(0, 2N-1) Algorithm call
 
     
-    for(int j = 0; j < (2 * circle.N); ++j){
+    for(int j = 0; j < circle.N; ++j){
         int k = circle.chords[j];
-        for(int i = 0; i < (j - 1); ++i){
-            if(k > 0){
-                if( (i <= k) && (k < j) && ( misTable[i][j-1] < (misTable[i][(k-1)] + misTable[k+1][j-1]+ 1)) ){
-                    misTable[i][j].assign1(&misTable[i][k - 1], &misTable[k+1][j-1], k, j);
-                }
-                else{
-                    misTable[i][j].assign2(&misTable[i][j-1]);
-                }
-            }
-            else{
+        for(int i = 0; i < j; ++i){
+            // cout<< "globally  "<<"i: "<< i<< "j: "<<j<<"k: "<<k<<endl;
+            if(k == 0){
+                // cout<< "else "<<"i: "<< i<< "j: "<<j<<"k: "<<k<<endl;         
+
                 if(i == 0){
-                    misTable[i][j].succesor[0] = &misTable[k+1][j-1];
+                    // cout<< "here3 "<<"i: "<< i<< "j: "<<j<<"k: "<<k<<endl;         
+                    misTable[i][j].succesor[1] = &misTable[k+1][j-1];
                     misTable[i][j].edge[0] = k;
                     misTable[i][j].edge[1] = j;
                     misTable[i][j].size = misTable[k+1][j-1].size + 1;
                 }
                 else{
+                    // cout<< "here4 "<<"i: "<< i<< "j: "<<j<<"k: "<<k<<endl;         
+
+                    misTable[i][j].assign2(&misTable[i][j-1]);
+                }
+            }
+            else{
+                // cout<< "here1 "<<"i: "<< i<< "j: "<<j<<"k: "<<k<<endl;         
+
+                if( (i <= k) && (k < j) && ( misTable[i][j-1] < (misTable[i][(k-1)] + misTable[k+1][j-1]+ 1)) ){
+                    // cout<<i<<j<<k;           
+                    // cout<< "here1 "<<"i: "<< i<< "j: "<<j<<"k: "<<k<<endl;                            
+                    misTable[i][j].assign1(&misTable[i][k - 1], &misTable[k+1][j-1], k, j);
+                }
+                else{
+                    // cout<< "here2 "<<"i: "<< i<< "j: "<<j<<"k: "<<k<<endl;         
+
                     misTable[i][j].assign2(&misTable[i][j-1]);
                 }
             }
 
         }
     }
-
+    cout<<"Circle"<<endl;
+    cout<<"Number of vertices:"<< circle.N<<endl;
+    cout<< "edges:"<<endl;
+    for(int i = 0; i < circle.N; ++i ){
+        cout<<i<<"<--->"<<circle.chords[i]<<endl;
+    }
+    /*
+    cout<< "result"<<endl;
+    for(int j = 0; j <  circle.N; ++j){
+        for(int i = 0; i < circle.N; ++i){
+            // cout<<"(i, j)"<<i<<", "<<j<<endl;
+            // traceEdge(&misTable[i][j]);
+            cout<< misTable[i][j].size<<" ";
+        }
+        cout<<endl;
+    }
+    */
     ofstream outFile(argv[2]);
-    outFile<< misTable[0][(2 * circle.N)-1].size<<endl;
-    traceEdge(&misTable[0][(2 * circle.N)-1], outFile);
+    outFile<< misTable[0][circle.N - 1].size;
+    traceEdge(&misTable[0][circle.N -1], outFile);
     myusage.report(true, true);
 }

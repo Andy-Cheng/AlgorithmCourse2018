@@ -20,9 +20,9 @@ if __name__ == '__main__':
     pair.sort(key= lambda e: e[0])
     fileName = str(args.n)+'.in'
     with open(fileName, 'w') as f:
-        f.write( str(args.n) + '\n')
+        f.write( str(args.n) + '\r\n')
         for i in range(N):
-            f.write(str(pair[i][0]) + ' ' + str(pair[i][1]) + '\n')
+            f.write(str(pair[i][0]) + ' ' + str(pair[i][1]) + '\r\n')
         f.write('0');
             
 
