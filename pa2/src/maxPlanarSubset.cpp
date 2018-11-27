@@ -3,12 +3,8 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include "myUsage.h"
-
 
 using namespace std;
-
-
 
 struct Circle{
     int* chords;
@@ -82,7 +78,6 @@ void traceEdge(MIS* mis, ofstream& outFile){
         traceEdge(mis->succesor[0], outFile);
     }
     if( mis->edge[0] != -1){
-        // cout<< mis->edge[0]<< " "<<mis->edge[1]<<endl;
         outFile<<"\n"<< mis->edge[0]<< " "<<mis->edge[1];
     }
     if(mis->succesor[1] != nullptr){
@@ -93,10 +88,9 @@ void traceEdge(MIS* mis, ofstream& outFile){
 
 
 int main(int argc, char** argv ){
-    MyUsage myusage;
     Circle circle;
     parseFile(argv[1], circle);
-    // |MIS(i, j)| is stored in dynamic array 2Nx2N.
+    // |MIS(i, j)| is stored in dynamic array NxN.
     MIS** misTable = new MIS* [circle.N];
     // Initialization MIS  table
     for(int i = 0; i <  circle.N; ++i){
@@ -109,44 +103,30 @@ int main(int argc, char** argv ){
             misTable[i][j].edge[1] = -1;
         }
     }
-    // FIND-MIS(0, 2N-1) Algorithm call
 
-    
+    // FIND-MIS(0, 2N-1) Algorithm call
     for(int j = 0; j < circle.N; ++j){
         int k = circle.chords[j];
         for(int i = 0; i < j; ++i){
-            // cout<< "globally  "<<"i: "<< i<< "j: "<<j<<"k: "<<k<<endl;
             if(k == 0){
-                // cout<< "else "<<"i: "<< i<< "j: "<<j<<"k: "<<k<<endl;         
-
                 if(i == 0){
-                    // cout<< "here3 "<<"i: "<< i<< "j: "<<j<<"k: "<<k<<endl;         
                     misTable[i][j].succesor[1] = &misTable[k+1][j-1];
                     misTable[i][j].edge[0] = k;
                     misTable[i][j].edge[1] = j;
                     misTable[i][j].size = misTable[k+1][j-1].size + 1;
                 }
                 else{
-                    // cout<< "here4 "<<"i: "<< i<< "j: "<<j<<"k: "<<k<<endl;         
-
                     misTable[i][j].assign2(&misTable[i][j-1]);
                 }
             }
             else{
-                // cout<< "here1 "<<"i: "<< i<< "j: "<<j<<"k: "<<k<<endl;         
-
                 if( (i <= k) && (k < j) && ( misTable[i][j-1] < (misTable[i][(k-1)] + misTable[k+1][j-1]+ 1)) ){
-                    // cout<<i<<j<<k;           
-                    // cout<< "here1 "<<"i: "<< i<< "j: "<<j<<"k: "<<k<<endl;                            
                     misTable[i][j].assign1(&misTable[i][k - 1], &misTable[k+1][j-1], k, j);
                 }
                 else{
-                    // cout<< "here2 "<<"i: "<< i<< "j: "<<j<<"k: "<<k<<endl;         
-
                     misTable[i][j].assign2(&misTable[i][j-1]);
                 }
             }
-
         }
     }
     /*
@@ -169,5 +149,4 @@ int main(int argc, char** argv ){
     ofstream outFile(argv[2]);
     outFile<< misTable[0][circle.N - 1].size;
     traceEdge(&misTable[0][circle.N -1], outFile);
-    myusage.report(true, true);
 }

@@ -2,7 +2,7 @@ CXX = g++
 CFLAGS = -g -std=c++11
 CFLAGS = -O3 -std=c++11
 
-EXE1 = maxPlanarSubset
+EXE1 = mps
 OBJ1 = maxPlanarSubset.o
 
 
