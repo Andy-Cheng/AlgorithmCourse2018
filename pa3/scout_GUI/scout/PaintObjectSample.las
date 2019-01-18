@@ -1,0 +1,17 @@
+endheader
+rect 10 20 30 70 maroon                                  // maroon rectangle from (10, 20) to (30, 70)
+rect 100 20 150 50 silver                                // silver rectangle from (100, 20) to (150, 50)
+pt 70 40 green 0                                         // green point(circle) at (70, 40)
+pt 80 20 green 1                                         // green point(square) at (80, 20)
+pt 10 10 purple 2                                        // purple point(cross) at (10, 10)
+pt 40 20 navy 3                                          // navy point(triangle) at (40, 20)
+pt 45 20 maroon 4                                        // maroon point(diamond) at (45, 20)
+pt 50 20 navy 5                                          // navy point(5-gon) at (50, 20)
+pt 55 20 maroon 6                                        // maroon point(6-gon) at (55, 20)
+pt 60 20 navy 8                                          // navy point(8-gon) at (60, 20)
+line 40 40 90 90 teal                                    // teal line from (40, 40) to (90, 90)
+line 40 90 90 40 navy                                    // navy line from (40, 90) to (90, 40)
+path 4 100 100 110 120 130 110 150 150 olive             // 4-point olive path #(100, 100) #(110, 120) #(130, 110) #(150, 150)
+path 5 20 100 30 120 40 110 50 150 60 100 blue           // 5-point blue path #(20, 100) #(30, 120) #(40, 110) #(50, 150) #(60, 100)
+circle 130 80 20 aqua                                    // aqua circle with center at (130, 80) and radius = 20
+polygon 5 65 125 80 150 105 125 80 105 90 125 lime       // 5-point lime polygon #(65, 125) #(80, 150) #(105, 125) #(80, 105) #(90, 125)
