@@ -12,3 +12,7 @@ In the terminal:
 ```
     ./mps <dir in>/<xxx>.in <dir out>/<xxx>.out
 ```
+3. To generate test data
+```
+    python3 -n <total number of edges on the circle> generate.py
+```
